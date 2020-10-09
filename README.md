@@ -39,38 +39,41 @@ df.head()
 
 ### Group 1
 
-Write a function called `bin_middle_age` that can be applied to the `age` column and returns a 1 if the age is 45-64 and a zero for every other age. 
+Write a function called `bin_middle_age` that can be applied to the `age` column in `X_train` and returns a 1 if the age is 45-64 and a zero for every other age. 
 
 ### Group 2
 
-Write a function called `bin_capital` that can be applied to the `capital_gain` and `capital_loss` columns and returns a 1 if the input is more than zero and a 0 for anything else.
+Write a function called `bin_capital` that can be applied to the `capital_gain` and `capital_loss` columns in `X_train` and returns a 1 if the input is more than zero and a 0 for anything else.
 
 ### Group 3
 
-Please write code to fit a one hot encoder to all of the object datatypes. Transform the object columns and turn them into a dataframe. For this final step, I'll give you two clues: "sparse" and "dense". Only one of them will be needed.
+Please write code to fit a one hot encoder to all of the object datatypes. Transform the object columns in `X_train` and turn them into a dataframe. For this final step, I'll give you two clues: "sparse" and "dense". Only one of them will be needed.
 
 ### Group 4
 
-Please write code to scale the `'hours_per_week'` column. Because you are scaling, please write code that does not lead to data leakage.
+Please write code to scale the `'hours_per_week'` column in `X_train'.
 
 
 ```python
+X_train, X_test, y_train, y_test = train_test_split(df.drop('income', axis = 1), 
+                                                    df.income,
+                                                    random_state = 2020)
+X_train.reset_index(drop=True, inplace=True)
+
 # Group 1
 def bin_middle_age(age):
     pass
 
-df['age'] = df.age.apply(bin_middle_age)
+X_train['age'] = X_train.age.apply(bin_middle_age)
 
 # Group 2
 def bin_capital(x):
     pass
 
-df['capital_gain'] = df.capital_gain.apply(bin_capital)
-df['capital_loss'] = df.capital_loss.apply(bin_capital)
+X_train['capital_gain'] = X_train.capital_gain.apply(bin_capital)
+X_train['capital_loss'] = X_train.capital_loss.apply(bin_capital)
 
-X_train, X_test, y_train, y_test = train_test_split(df.drop('income', axis = 1), 
-                                                    df.income,
-                                                    random_state = 2020)  
+ 
 X_train.reset_index(drop=True, inplace=True)
 
 # Group 3
