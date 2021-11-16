@@ -54,14 +54,14 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 ```python
-df = pd.read_csv('data/income.csv')
+df = pd.read_csv('data/adult.csv')
 df.head()
 ```
 
 
 ```python
 #__SOLUTION__
-df = pd.read_csv('data/income.csv')
+df = pd.read_csv('data/adult.csv')
 df.head()
 ```
 
