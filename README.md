@@ -755,7 +755,7 @@ preprocessing.fit_transform(X_train)
 
 
 
-    array([[ 0.        ,  0.        ,  0.        , ...,  0.        ,
+    array([[ 0.        ,  0.        ,  1.        , ...,  0.        ,
              0.        , -2.87747181],
            [ 0.        ,  0.        ,  0.        , ...,  0.        ,
              0.        ,  0.77531045],
@@ -780,7 +780,7 @@ preprocessing.fit_transform(X_train)
 
 
 
-    array([[ 0.        ,  0.        ,  0.        , ...,  0.        ,
+    array([[ 0.        ,  0.        ,  1.        , ...,  0.        ,
              0.        , -2.87747181],
            [ 0.        ,  0.        ,  0.        , ...,  0.        ,
              0.        ,  0.77531045],
@@ -823,7 +823,7 @@ cross_val_score(dt_pipeline, X_train, y_train)
 
 
 
-    array([0.80400364, 0.80709736, 0.80436761, 0.81598107, 0.8054241 ])
+    array([0.80727934, 0.81146497, 0.80746133, 0.81234074, 0.80269385])
 
 
 
@@ -836,7 +836,7 @@ cross_val_score(dt_pipeline, X_train, y_train)
 
 
 
-    array([0.80327571, 0.80509554, 0.80691538, 0.815253  , 0.8076083 ])
+    array([0.80527753, 0.81091902, 0.80709736, 0.8119767 , 0.804332  ])
 
 
 
@@ -848,7 +848,7 @@ cross_val_score(rf_pipeline, X_train, y_train)
 
 
 
-    array([0.83421292, 0.83202912, 0.82911738, 0.8401893 , 0.82981434])
+    array([0.83676069, 0.833303  , 0.83130118, 0.8380051 , 0.82963233])
 
 
 
@@ -861,7 +861,7 @@ cross_val_score(rf_pipeline, X_train, y_train)
 
 
 
-    array([0.83730664, 0.83184713, 0.8300273 , 0.83891518, 0.83163451])
+    array([0.83676069, 0.83275705, 0.83093722, 0.83946123, 0.83199854])
 
 
 
@@ -874,8 +874,8 @@ print(f'Training Accuracy: {accuracy_score(y_train, train_preds)}')
 print(f'Validation Accuracy: {accuracy_score(y_val, val_preds)}')
 ```
 
-    Training Accuracy: 0.843155097732319
-    Validation Accuracy: 0.8389386328892772
+    Training Accuracy: 0.8435554908455575
+    Validation Accuracy: 0.840467350949989
 
 
 
@@ -888,8 +888,8 @@ print(f'Training Accuracy: {accuracy_score(y_train, train_preds)}')
 print(f'Validation Accuracy: {accuracy_score(y_val, val_preds)}')
 ```
 
-    Training Accuracy: 0.843955883958796
-    Validation Accuracy: 0.8394846036252457
+    Training Accuracy: 0.8427183052451498
+    Validation Accuracy: 0.8376283031229526
 
 
 Finally, we can fit the final pipeline on all of the data and test it on an additional hold out set!
@@ -903,16 +903,15 @@ rf_pipeline.fit(df.drop('income', axis = 1), df.income)
 
 
     Pipeline(steps=[('columntransformer',
-                     ColumnTransformer(transformers=[('functiontransformer-1',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9898529550>),
-                                                      ['age']),
-                                                     ('functiontransformer-2',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9875de7950>),
+                     ColumnTransformer(transformers=[('binage', BinAge(), ['age']),
+                                                     ('bincapital-1', BinCapital(),
                                                       ['capital-gain']),
+                                                     ('bincapital-2', BinCapital(),
+                                                      ['capital-loss']),
                                                      ('onehotencoder',
                                                       OneHotEncoder(handle_unknown='ignore',
                                                                     sparse=False),
-                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7f9898529610>),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fdfc1fd9590>),
                                                      ('standardscaler',
                                                       StandardScaler(),
                                                       ['hours-per-week'])])),
@@ -931,16 +930,15 @@ rf_pipeline.fit(df.drop('income', axis = 1), df.income)
 
 
     Pipeline(steps=[('columntransformer',
-                     ColumnTransformer(transformers=[('functiontransformer-1',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9898529550>),
-                                                      ['age']),
-                                                     ('functiontransformer-2',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9875de7950>),
+                     ColumnTransformer(transformers=[('binage', BinAge(), ['age']),
+                                                     ('bincapital-1', BinCapital(),
                                                       ['capital-gain']),
+                                                     ('bincapital-2', BinCapital(),
+                                                      ['capital-loss']),
                                                      ('onehotencoder',
                                                       OneHotEncoder(handle_unknown='ignore',
                                                                     sparse=False),
-                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7f9898529610>),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fdfc1fd9590>),
                                                      ('standardscaler',
                                                       StandardScaler(),
                                                       ['hours-per-week'])])),
@@ -964,7 +962,7 @@ rf_pipeline.score(X_test, y_test)
 
 
 
-    0.8398165588403899
+    0.8423552534599951
 
 
 
@@ -982,7 +980,7 @@ rf_pipeline.score(X_test, y_test)
 
 
 
-    0.8398165588403899
+    0.8423552534599951
 
 
 
@@ -1063,3 +1061,53 @@ model.predict(X)
           dtype=object)
 
 
+
+### Visualize the pipeline!
+
+
+```python
+from sklearn import set_config
+
+set_config(display="diagram")
+model
+```
+
+
+
+
+<style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="c7965859-c316-4852-9687-dd580d122b7b" type="checkbox" ><label class="sk-toggleable__label" for="c7965859-c316-4852-9687-dd580d122b7b">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('columntransformer',
+                 ColumnTransformer(transformers=[('binage', BinAge(), ['age']),
+                                                 ('bincapital-1', BinCapital(),
+                                                  ['capital-gain']),
+                                                 ('bincapital-2', BinCapital(),
+                                                  ['capital-loss']),
+                                                 ('onehotencoder',
+                                                  OneHotEncoder(handle_unknown='ignore',
+                                                                sparse=False),
+                                                  <sklearn.compose._column_transformer.make_column_selector object at 0x7fdfad207bd0>),
+                                                 ('standardscaler',
+                                                  StandardScaler(),
+                                                  ['hours-per-week'])])),
+                ('randomforestclassifier',
+                 RandomForestClassifier(max_depth=10))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d2e7c754-8489-41fd-901b-5f29edeae048" type="checkbox" ><label class="sk-toggleable__label" for="d2e7c754-8489-41fd-901b-5f29edeae048">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('binage', BinAge(), ['age']),
+                                ('bincapital-1', BinCapital(),
+                                 ['capital-gain']),
+                                ('bincapital-2', BinCapital(),
+                                 ['capital-loss']),
+                                ('onehotencoder',
+                                 OneHotEncoder(handle_unknown='ignore',
+                                               sparse=False),
+                                 <sklearn.compose._column_transformer.make_column_selector object at 0x7fdfad207bd0>),
+                                ('standardscaler', StandardScaler(),
+                                 ['hours-per-week'])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e8dbeacd-2a43-4667-bd56-46b9f2357d8a" type="checkbox" ><label class="sk-toggleable__label" for="e8dbeacd-2a43-4667-bd56-46b9f2357d8a">binage</label><div class="sk-toggleable__content"><pre>['age']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="2c99c595-24aa-4748-93cb-780004207380" type="checkbox" ><label class="sk-toggleable__label" for="2c99c595-24aa-4748-93cb-780004207380">BinAge</label><div class="sk-toggleable__content"><pre>BinAge()</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="a117ee16-174b-484d-9de1-5ec05b1eaabc" type="checkbox" ><label class="sk-toggleable__label" for="a117ee16-174b-484d-9de1-5ec05b1eaabc">bincapital-1</label><div class="sk-toggleable__content"><pre>['capital-gain']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d9247a84-137f-4cac-b76d-0ff5c7100288" type="checkbox" ><label class="sk-toggleable__label" for="d9247a84-137f-4cac-b76d-0ff5c7100288">BinCapital</label><div class="sk-toggleable__content"><pre>BinCapital()</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="48d9ecc8-053c-4bdf-837d-33708018b3eb" type="checkbox" ><label class="sk-toggleable__label" for="48d9ecc8-053c-4bdf-837d-33708018b3eb">bincapital-2</label><div class="sk-toggleable__content"><pre>['capital-loss']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e64aba64-bef8-40f3-ba82-d24991052dc2" type="checkbox" ><label class="sk-toggleable__label" for="e64aba64-bef8-40f3-ba82-d24991052dc2">BinCapital</label><div class="sk-toggleable__content"><pre>BinCapital()</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="ffcc5d5f-d51f-49d1-9ccf-9326971fa0c2" type="checkbox" ><label class="sk-toggleable__label" for="ffcc5d5f-d51f-49d1-9ccf-9326971fa0c2">onehotencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fdfad207bd0></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="a285c11d-bdea-418f-b688-804f45a7bc54" type="checkbox" ><label class="sk-toggleable__label" for="a285c11d-bdea-418f-b688-804f45a7bc54">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore', sparse=False)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="692cb28c-e792-436b-9aea-b7c7586adda4" type="checkbox" ><label class="sk-toggleable__label" for="692cb28c-e792-436b-9aea-b7c7586adda4">standardscaler</label><div class="sk-toggleable__content"><pre>['hours-per-week']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="672d8757-29ab-4160-89eb-f128575348eb" type="checkbox" ><label class="sk-toggleable__label" for="672d8757-29ab-4160-89eb-f128575348eb">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="ea6d6b8d-bc01-48cb-b8e3-641eaad77b1c" type="checkbox" ><label class="sk-toggleable__label" for="ea6d6b8d-bc01-48cb-b8e3-641eaad77b1c">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(max_depth=10)</pre></div></div></div></div></div></div></div>
+
+
+
+
+```python
+#__SOLUTION__
+from sklearn import set_config
+
+set_config(display="diagram")
+model
+```
