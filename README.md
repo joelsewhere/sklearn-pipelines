@@ -175,18 +175,6 @@ preprocessing = make_column_transformer((BinAge(), ['age']),
                                       remainder='drop')
 ```
 
-
-```python
-# __SOLUTION__
-preprocessing = make_column_transformer((BinAge(), ['age']),
-                                      (BinCapital(), ['capital-gain']),
-                                      (BinCapital(), ['capital-loss']),
-                                      (OneHotEncoder(sparse=False, handle_unknown='ignore'),
-                                       make_column_selector(dtype_include=object)),
-                                      (StandardScaler(), ['hours-per-week']),
-                                      remainder='drop')
-```
-
 Now all of our preprocessing can be done with the `fit_transform` method!
 
 
