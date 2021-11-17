@@ -31,173 +31,6 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 ```python
-# __SOLUTION__
-# Standard Imports
-import pandas as pd
-import numpy as np
-
-# Transformers
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-
-# Modeling Evaluation
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import accuracy_score
-
-# Pipelines
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.compose import make_column_selector, make_column_transformer
-from sklearn.pipeline import make_pipeline
-import pickle
-
-# Machine Learning
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-```
-
-
-```python
-df = pd.read_csv('data/train.csv')
-df.head()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>age</th>
-      <th>workclass</th>
-      <th>fnlwgt</th>
-      <th>education</th>
-      <th>educational-num</th>
-      <th>marital-status</th>
-      <th>occupation</th>
-      <th>relationship</th>
-      <th>race</th>
-      <th>gender</th>
-      <th>capital-gain</th>
-      <th>capital-loss</th>
-      <th>hours-per-week</th>
-      <th>native-country</th>
-      <th>income</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>53</td>
-      <td>Local-gov</td>
-      <td>283602</td>
-      <td>Masters</td>
-      <td>14</td>
-      <td>Married-civ-spouse</td>
-      <td>Prof-specialty</td>
-      <td>Wife</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>15024</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>28</td>
-      <td>Self-emp-not-inc</td>
-      <td>35864</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>Other</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>70</td>
-      <td>Iran</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>29</td>
-      <td>Private</td>
-      <td>146764</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Divorced</td>
-      <td>Adm-clerical</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>35</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>49</td>
-      <td>Private</td>
-      <td>59380</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-spouse-absent</td>
-      <td>Adm-clerical</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>51</td>
-      <td>Self-emp-inc</td>
-      <td>338836</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
-#__SOLUTION__
 df = pd.read_csv('data/train.csv')
 df.head()
 ```
@@ -361,52 +194,6 @@ Merge the transformed features into a new dataframe called `modeling_df`.
 
 
 ```python
-X_train, X_test, y_train, y_test = train_test_split(df.drop('income', axis = 1), 
-                                                    df.income,
-                                                    random_state = 2020)
-X_train.reset_index(drop=True, inplace=True)
-
-# Task 1
-# ===========================================
-def bin_middle_age(age):
-    pass
-
-X_train['age'] = X_train.age.apply(bin_middle_age)
-# ===========================================
-
-# Task 2
-# ===========================================
-def bin_capital(x):
-    pass
-
-X_train['capital-gain'] = X_train['capital-gain'].apply(bin_capital)
-X_train['capital-loss'] = X_train['capital-loss'].apply(bin_capital)
-
- 
-X_train.reset_index(drop=True, inplace=True)
-# ===========================================
-
-# Task 3
-# ===========================================
-hot_encoder = None
-categoricals = None
-# ===========================================
-
-# Task 4
-# ===========================================
-hours_scaler = None
-hours_per_week = None
-# ===========================================
-
-# Task 5
-# ===========================================
-modeling_df = None
-# ===========================================
-```
-
-
-```python
-# __SOLUTION__
 X_train, X_val, y_train, y_val = train_test_split(df.drop('income', axis = 1), 
                                                     df.income,
                                                     random_state = 2020)  
@@ -654,24 +441,6 @@ To do this, we will create a class called `BinAge` that inherits from the sklear
 ```python
 from numpy import vectorize
 
-class BinAge():
-    
-    def fit(self, X, y=None):
-        pass
-    
-    @vectorize
-    def _bin_data(x):
-        return int(x >= 45 and x <= 64)
-    
-    def transform(self, X):
-        pass
-```
-
-
-```python
-# __SOLUTION__
-from numpy import vectorize
-
 class BinAge(TransformerMixin, BaseEstimator):
     
     def fit(self, X, y=None):
@@ -689,13 +458,6 @@ class BinAge(TransformerMixin, BaseEstimator):
 
 
 ```python
-class BinCapital():
-    pass
-```
-
-
-```python
-# __SOLUTION__
 class BinCapital(TransformerMixin, BaseEstimator):
     def __init__(self):
         pass
@@ -733,18 +495,6 @@ preprocessing = make_column_transformer((BinAge(), ['age']),
                                       remainder='drop')
 ```
 
-
-```python
-# __SOLUTION__
-preprocessing = make_column_transformer((BinAge(), ['age']),
-                                      (BinCapital(), ['capital-gain']),
-                                      (BinCapital(), ['capital-loss']),
-                                      (OneHotEncoder(sparse=False, handle_unknown='ignore'),
-                                       make_column_selector(dtype_include=object)),
-                                      (StandardScaler(), ['hours-per-week']),
-                                      remainder='drop')
-```
-
 Now all of our preprocessing can be done with the `fit_transform` method!
 
 
@@ -755,32 +505,7 @@ preprocessing.fit_transform(X_train)
 
 
 
-    array([[ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        , -2.87747181],
-           [ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        ,  0.77531045],
-           [ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        ,  0.20709987],
-           ...,
-           [ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        , -0.03641894],
-           [ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        ,  0.28827281],
-           [ 0.        ,  0.        ,  0.        , ...,  0.        ,
-             0.        ,  0.77531045]])
-
-
-
-
-```python
-#__SOLUTION__
-preprocessing.fit_transform(X_train)
-```
-
-
-
-
-    array([[ 0.        ,  0.        ,  0.        , ...,  0.        ,
+    array([[ 0.        ,  0.        ,  1.        , ...,  0.        ,
              0.        , -2.87747181],
            [ 0.        ,  0.        ,  0.        , ...,  0.        ,
              0.        ,  0.77531045],
@@ -804,13 +529,6 @@ dt_pipeline = make_pipeline(preprocessing, DecisionTreeClassifier())
 rf_pipeline = make_pipeline(preprocessing, RandomForestClassifier(max_depth=10))
 ```
 
-
-```python
-#__SOLUTION__
-dt_pipeline = make_pipeline(preprocessing, DecisionTreeClassifier())
-rf_pipeline = make_pipeline(preprocessing, RandomForestClassifier(max_depth=10))
-```
-
 ## Our pipelines are built!
 
 Now we can run them through cross validation!
@@ -823,20 +541,7 @@ cross_val_score(dt_pipeline, X_train, y_train)
 
 
 
-    array([0.80400364, 0.80709736, 0.80436761, 0.81598107, 0.8054241 ])
-
-
-
-
-```python
-#__SOLUTION__
-cross_val_score(dt_pipeline, X_train, y_train)
-```
-
-
-
-
-    array([0.80327571, 0.80509554, 0.80691538, 0.815253  , 0.8076083 ])
+    array([0.80873521, 0.80909918, 0.80800728, 0.81070258, 0.80451402])
 
 
 
@@ -848,20 +553,7 @@ cross_val_score(rf_pipeline, X_train, y_train)
 
 
 
-    array([0.83421292, 0.83202912, 0.82911738, 0.8401893 , 0.82981434])
-
-
-
-
-```python
-#__SOLUTION__
-cross_val_score(rf_pipeline, X_train, y_train)
-```
-
-
-
-
-    array([0.83730664, 0.83184713, 0.8300273 , 0.83891518, 0.83163451])
+    array([0.83694268, 0.833303  , 0.83348499, 0.84255552, 0.83017838])
 
 
 
@@ -874,22 +566,8 @@ print(f'Training Accuracy: {accuracy_score(y_train, train_preds)}')
 print(f'Validation Accuracy: {accuracy_score(y_val, val_preds)}')
 ```
 
-    Training Accuracy: 0.843155097732319
-    Validation Accuracy: 0.8389386328892772
-
-
-
-```python
-#__SOLUTION__
-rf_pipeline.fit(X_train, y_train)
-train_preds = rf_pipeline.predict(X_train)
-val_preds = rf_pipeline.predict(X_val)
-print(f'Training Accuracy: {accuracy_score(y_train, train_preds)}')
-print(f'Validation Accuracy: {accuracy_score(y_val, val_preds)}')
-```
-
-    Training Accuracy: 0.843955883958796
-    Validation Accuracy: 0.8394846036252457
+    Training Accuracy: 0.844101481454519
+    Validation Accuracy: 0.839375409478052
 
 
 Finally, we can fit the final pipeline on all of the data and test it on an additional hold out set!
@@ -903,44 +581,15 @@ rf_pipeline.fit(df.drop('income', axis = 1), df.income)
 
 
     Pipeline(steps=[('columntransformer',
-                     ColumnTransformer(transformers=[('functiontransformer-1',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9898529550>),
-                                                      ['age']),
-                                                     ('functiontransformer-2',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9875de7950>),
+                     ColumnTransformer(transformers=[('binage', BinAge(), ['age']),
+                                                     ('bincapital-1', BinCapital(),
                                                       ['capital-gain']),
+                                                     ('bincapital-2', BinCapital(),
+                                                      ['capital-loss']),
                                                      ('onehotencoder',
                                                       OneHotEncoder(handle_unknown='ignore',
                                                                     sparse=False),
-                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7f9898529610>),
-                                                     ('standardscaler',
-                                                      StandardScaler(),
-                                                      ['hours-per-week'])])),
-                    ('randomforestclassifier',
-                     RandomForestClassifier(max_depth=10))])
-
-
-
-
-```python
-#__SOLUTION__
-rf_pipeline.fit(df.drop('income', axis = 1), df.income)
-```
-
-
-
-
-    Pipeline(steps=[('columntransformer',
-                     ColumnTransformer(transformers=[('functiontransformer-1',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9898529550>),
-                                                      ['age']),
-                                                     ('functiontransformer-2',
-                                                      FunctionTransformer(func=<numpy.vectorize object at 0x7f9875de7950>),
-                                                      ['capital-gain']),
-                                                     ('onehotencoder',
-                                                      OneHotEncoder(handle_unknown='ignore',
-                                                                    sparse=False),
-                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7f9898529610>),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7f81c7748b50>),
                                                      ('standardscaler',
                                                       StandardScaler(),
                                                       ['hours-per-week'])])),
@@ -964,25 +613,7 @@ rf_pipeline.score(X_test, y_test)
 
 
 
-    0.8398165588403899
-
-
-
-
-```python
-#__SOLUTION__
-# Import holdout data
-test = pd.read_csv('data/test.csv')
-# Seperate features from the target
-X_test, y_test = test.drop(columns=['income']), test.income
-# Score the model
-rf_pipeline.score(X_test, y_test)
-```
-
-
-
-
-    0.8398165588403899
+    0.8420276799606912
 
 
 
@@ -1005,48 +636,10 @@ pickle.dump(rf_pipeline, file)
 file.close()
 ```
 
-
-```python
-#__SOLUTION__
-# Merge training and hold out sets
-full_data = pd.concat([df, test])
-
-# Seperate the features from the target
-X, y = df.drop(columns=['income']), df.income
-
-# Fit the model to *all* observations
-rf_pipeline.fit(X, y)
-
-# Save the fit model to disk
-file = open('model_v1.pkl', 'wb')
-pickle.dump(rf_pipeline, file)
-file.close()
-```
-
 ### Check the saved model works when loaded
 
 
 ```python
-# Load the model
-file = open('model_v1.pkl', 'rb')
-model = pickle.load(file)
-file.close()
-
-# Generate predictions
-model.predict(X)
-```
-
-
-
-
-    array(['>50K', '<=50K', '<=50K', ..., '<=50K', '<=50K', '<=50K'],
-          dtype=object)
-
-
-
-
-```python
-#__SOLUTION__
 # Load the model
 file = open('model_v1.pkl', 'rb')
 model = pickle.load(file)
