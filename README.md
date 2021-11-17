@@ -727,7 +727,7 @@ To make this pipeline, we will use the following sklearn functions:
 preprocessing = make_column_transformer((BinAge(), ['age']),
                                       (BinCapital(), ['capital-gain']),
                                       (BinCapital(), ['capital-loss']),
-                                      (OneHotEncoder(),
+                                      (OneHotEncoder(sparse=False, handle_unknown='ignore'),
                                        make_column_selector(dtype_include=object)),
                                       (StandardScaler(), ['hours-per-week']),
                                       remainder='drop')
@@ -739,7 +739,7 @@ preprocessing = make_column_transformer((BinAge(), ['age']),
 preprocessing = make_column_transformer((BinAge(), ['age']),
                                       (BinCapital(), ['capital-gain']),
                                       (BinCapital(), ['capital-loss']),
-                                      (OneHotEncoder(),
+                                      (OneHotEncoder(sparse=False, handle_unknown='ignore'),
                                        make_column_selector(dtype_include=object)),
                                       (StandardScaler(), ['hours-per-week']),
                                       remainder='drop')
